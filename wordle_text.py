@@ -102,10 +102,11 @@ def make_guess(guess, word, unused_chars, visited, current_choice, game_word):
             visited[i] = True
             current_choice[i] = "G"
     for i in range(5):
-        if (guess[i] in word and not visited[word.index(guess[i])]
-                and current_choice[i] == "-"):
-            visited[word.index(guess[i])] = True
-            current_choice[i] = "O"
+        if (guess[i] in word and current_choice[i] == "-"):
+            for j in range(5):
+                if (word[j] == guess[i] and not visited[j]):
+                    visited[word.index(guess[i])] = True
+                    current_choice[i] = "O"
     game_word += ("\n" + current_choice[0] + current_choice[1] +
                   current_choice[2] + current_choice[3] + current_choice[4])
     game_word += "\n" + guess
