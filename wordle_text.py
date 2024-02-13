@@ -109,9 +109,9 @@ def make_guess(guess, word, unused_chars, visited, current_choice, game_word):
     game_word += ("\n" + current_choice[0] + current_choice[1] +
                   current_choice[2] + current_choice[3] + current_choice[4])
     game_word += "\n" + guess
-    unused_word = "Unused letters: "
+    unused_word = "Unused letters:"
     for letter in unused_chars:
-        unused_word += letter + " "
+        unused_word += " " + letter
     print(game_word)
     print("\n" + unused_word)
     return game_word
