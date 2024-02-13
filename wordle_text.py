@@ -81,7 +81,7 @@ def play_game(secret_words, all_words):
         current_choice = ["-", "-", "-", "-", "-"]
         visited = [False, False, False, False, False]
         if len(guess) != 5 or guess not in all_words:
-            print(guess + " is not a valid word. Please try again.")
+            print("\n" + guess + " is not a valid word. Please try again.")
             continue
         game_word = make_guess(guess, word, unused_chars, visited, current_choice, game_word)
         if guess == word:
