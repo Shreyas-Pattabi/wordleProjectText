@@ -107,6 +107,7 @@ def make_guess(guess, word, unused_chars, visited, current_choice, game_word):
                 if (word[j] == guess[i] and not visited[j]):
                     visited[j] = True
                     current_choice[i] = "O"
+                    break
     game_word += ("\n" + current_choice[0] + current_choice[1] +
                   current_choice[2] + current_choice[3] + current_choice[4])
     game_word += "\n" + guess
