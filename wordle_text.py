@@ -69,10 +69,21 @@ def get_words():
 
 
 def play_game(secret_words, all_words):
+    """
+    Selects a random word in secret_words as the target. Starts the game
+    by allowing users to guess valid words. A valid word is any word
+    that exists in all_words. It outputs the status of the guess against
+    the target after each guess and maintains a record of the previous
+    guesses. It allows up to 6 guesses to get the target word.
+    :param secret_words: list of secret words. Subset of all_words
+    :param all_words: list of all valid guesses
+    :return: void
+    """
     word = random.choice(secret_words)
     unused_chars = []
     game_rounds = 0
-    response = [" Genius!", " Magnificent!", " Impressive!", " Splendid!", " Great!", " Phew!"]
+    response = [" Genius!", " Magnificent!", " Impressive!",
+                " Splendid!", " Great!", " Phew!"]
     game_word = ""
     for i in range(65, 91):
         unused_chars.append(chr(i))
@@ -80,21 +91,40 @@ def play_game(secret_words, all_words):
         guess = input("\nEnter your guess. A 5 letter word: ").upper()
         current_choice = ["-", "-", "-", "-", "-"]
         visited = [False, False, False, False, False]
-        if len(guess) != 5 or guess not in all_words:
-            print("\n" + guess + " is not a valid word. Please try again.")
+        if guess not in all_words:
+            print("\n" + guess + " is not a valid word."
+                                 " Please try again.")
             continue
-        game_word = make_guess(guess, word, unused_chars, visited, current_choice, game_word)
+        game_word = make_guess(guess, word, unused_chars, visited,
+                               current_choice, game_word)
         if guess == word:
             print("\nYou win." + response[game_rounds])
             break
         game_rounds += 1
     if game_rounds == 6:
         print("\nNot quite. The secret word was " + word + ".")
-    if input("\nDo you want to play again? Type Y for yes: ").upper() == "Y":
+    again = input("\nDo you want to play again? Type Y for yes: ")
+    again = again.upper()
+    if again == "Y":
         play_game(secret_words, all_words)
 
 
 def make_guess(guess, word, unused_chars, visited, current_choice, game_word):
+    """
+    Method for making the guess. Uses and updates all the relevant
+    parameters and returns the most updated version of game_word.
+    :param guess: The user's guess word
+    :param word: The target word
+    :param unused_chars: List of characters that have not been used
+    :param visited: List that marks when a letter in the target has
+    been compared against a character in the guess
+    :param current_choice: List that maintains the status of the guess.
+    G for letter match, O for letter exists in target but not a match,
+    dash for letter is not in target
+    :param game_word: is the string that keeps a record of all the
+    guesses
+    :return: game_word updated with the newest guess
+    """
     for i in range(5):
         if guess[i] in unused_chars:
             unused_chars.remove(guess[i])
@@ -102,14 +132,15 @@ def make_guess(guess, word, unused_chars, visited, current_choice, game_word):
             visited[i] = True
             current_choice[i] = "G"
     for i in range(5):
-        if (guess[i] in word and current_choice[i] == "-"):
+        if guess[i] in word and current_choice[i] == "-":
             for j in range(5):
-                if (word[j] == guess[i] and not visited[j]):
+                if word[j] == guess[i] and not visited[j]:
                     visited[j] = True
                     current_choice[i] = "O"
                     break
-    game_word += ("\n" + current_choice[0] + current_choice[1] +
-                  current_choice[2] + current_choice[3] + current_choice[4])
+    game_word += "\n"
+    for i in range(5):
+        game_word += current_choice[i]
     game_word += "\n" + guess
     unused_word = "Unused letters:"
     for letter in unused_chars:
